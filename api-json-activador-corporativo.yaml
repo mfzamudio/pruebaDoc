@@ -1,0 +1,220 @@
+---
+openapi: 3.0.0
+info:
+  title: API Json Activador Corporativo
+  description: |-
+    Esta documentación está basada en el servicio Json de la API expuesta por HPESA, para realizar acciones de aprovisionamiento de servicios corporativos, para la implementación de Claro Colombia.
+
+    _Este es un documento en constante cambio, el cual se irá cambiando y complementando conforme las acciones, comandos y trámites del servicio sean implementados, validados y probados por Claro Colombia en conjunto con HPE._
+  contact:
+    email: hpsa.support.tel.co@hpe.com
+  version: 1.0.0
+servers:
+- description: Producción lnx_hpsacorp1 - IP producción
+  url: http://100.123.26.111:8080
+paths:
+  /om/omc/commondata/servicenumberseq:
+    get:
+      tags:
+      - Orden
+      description: -insertar descripción-
+      operationId: service
+      responses:
+        400:
+          description: Invalid status value
+        200:
+          description: successful operation
+      security:
+      - httpBasic: []
+  /om/omc/commondata/transactionseq:
+    get:
+      tags:
+      - Orden
+      description: -insertar descripción-
+      operationId: transaction
+      responses:
+        400:
+          description: Invalid status value
+        200:
+          description: successful operation
+      security:
+      - httpBasic: []
+  /om/omc/om/provisioning/subscription:
+    put:
+      tags:
+      - Tramites
+      summary: Realizar el Alta
+      description: -insertar descripción-
+      operationId: TramiteAlta
+      requestBody:
+        description: Request necesario para crear el Alta
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AltaReq'
+      responses:
+        400:
+          description: Invalid status value
+          content:
+            application/json: []
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AltaResp'
+      security:
+      - httpBasic: []
+  /om/omc/om/crm:
+    post:
+      tags:
+      - Orden
+      summary: Creación de Orden
+      description: -insertar descripción-
+      operationId: CrearOrden
+      requestBody:
+        description: Request necesario para realizar la creación de la Orden
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdenReq'
+      responses:
+        400:
+          description: Invalid status value
+          content:
+            application/json: []
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdenResp'
+      security:
+      - httpBasic: []
+components:
+  schemas:
+    AltaResp:
+      type: object
+      properties:
+        data:
+          type: object
+        meta:
+          type: object
+          properties:
+            activity_id:
+              type: string
+            type:
+              type: string
+            message:
+              type: string
+              example: OK
+            code:
+              type: integer
+              format: int64
+            uuid:
+              type: string
+              example: eb14b597-80ce-46cb-9cb7-2c9718574f8d
+    AltaReq:
+      type: object
+      properties:
+        attributes:
+          type: array
+          description: arreglo de parámetros y sus valores
+          items: []
+        wf_transaction_id:
+          type: string
+          description: identificador de la transacción
+          example: "42639"
+        subscription_id:
+          type: string
+          description: identificador de la suscripción
+          example: "2050000000001"
+    OrdenResp:
+      type: object
+      properties:
+        service:
+          type: object
+          properties:
+            transactionid:
+              type: string
+              example: 3407ba56-baa4-4ca4-b473-a99219d7189a
+    OrdenReq:
+      type: object
+      properties:
+        service:
+          type: object
+          properties:
+            orderid:
+              type: string
+              example: HPE_OMC
+            orderidcount:
+              type: integer
+              format: int64
+              example: 1
+            service:
+              type: object
+              properties:
+                routing_type:
+                  type: string
+                layer_three:
+                  type: string
+                  example: "N"
+                layer_two:
+                  type: string
+                  example: "Y"
+                work_order:
+                  type: string
+                  example: OT001
+                master_link_id:
+                  type: string
+                  example: CD001
+                link_id:
+                  type: string
+                  example: CD001
+                certificationType:
+                  type: string
+                  example: CED
+                schedule_time:
+                  type: string
+                  example: ' '
+                product_id:
+                  type: string
+                  example: "1"
+                technology_type:
+                  type: string
+                  example: FTTX
+                com_id:
+                  type: string
+                  example: HPE_OMC
+                customerLevel:
+                  type: string
+                  example: Standard
+                customer_name:
+                  type: string
+                  example: James Bond
+                customer_id:
+                  type: string
+                  example: "001"
+                customerCode:
+                  type: string
+                  example: "001"
+                action:
+                  type: string
+                  example: create
+        headers:
+          type: object
+          properties:
+            X-OriginChannel:
+              type: string
+              example: HPE_OMC
+  securitySchemes:
+    httpBasic:
+      type: http
+      scheme: basic
+tags:
+- name: Tramites
+  description: Tramites que se pueden realizar sobre una Orden de Servicio o sobre
+    Suscripciones ya instanciadas
+- name: Orden
+  description: Operaciones relacionadas con la Orden de Servicio para las suscripciones
+...
